@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+    - 1002:3000
+    volumes:
+    - "./client:/app"
+    depends_on:
+    - api
+    links:
+    - api
+    stdin_open: true
+    environment:
+      API_HTTP_URL: "api:1000"
+      API_HTTPS_URL: "api:1001"
+  api:
+    stdin_open: true
+    tty: true
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    command: ["dotnet", "watch", "run","--urls=http://+:80"]
+    volumes:
+      - "./api:/app"
+    ports:
+      - "1000:80"
+    # db:
+    #     image: "mcr.microsoft.com/mssql/server"
+    #     environment:
+    #         SA_PASSWORD: "Your_password123"
+    #         ACCEPT_EULA: "Y"
+
+  # db:
+  #   image: "mcr.microsoft.com/mssql/server"
+  #   environment:
+  #       SA_PASSWORD: "Millenium444"
+  #       ACCEPT_EULA: "Y"
+
+  # api: 
+  #   build: 
+  #     context: api
+  #     dockerfile: ./api/Dockerfile
+  #   ports:
+  #   - 1000: 5000
+  #   - 1001: 5001
+  #   depends_on:
+  #     - db
+
+    
