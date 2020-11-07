@@ -23,9 +23,15 @@ namespace api.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("test")]
+        public string Test(){
+            return "cooool 243 cuaiu";
+        }
+
+        [HttpGet()]
         public IEnumerable<WeatherForecast> Get()
         {
+            _logger.Log(LogLevel.Information,"cooool82983");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
